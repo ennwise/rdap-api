@@ -20,7 +20,7 @@ COPY . .
 RUN cargo build --release
 
 # Stage 2: Runtime
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 # Install necessary dependencies
 RUN apt-get update && apt-get install -y \
