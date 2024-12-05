@@ -27,14 +27,22 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
+RUN groupadd -g 50000 appgroup && useradd -u 50000 -g appgroup appuser
+
 # Set the working directory
 WORKDIR /usr/src/app
 
 # Copy the built binary from the builder stage
 COPY --from=builder /usr/src/app/target/release/rdap-api .
 
+# Change ownership of the files to user 50000 and group 50000
+RUN chown -R appuser:appgroup /usr/src/app
+
 # Expose the port that the application will run on
 EXPOSE 3030
+
+# Switch to the new user
+USER appuser
 
 # Set the entrypoint to the binary
 CMD ["./rdap-api"]
