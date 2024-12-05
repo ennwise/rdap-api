@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM rust:latest as builder
+FROM rust:latest AS builder
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -20,7 +20,7 @@ COPY . .
 RUN cargo build --release
 
 # Stage 2: Runtime
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 # Install necessary dependencies
 RUN apt-get update && apt-get install -y \

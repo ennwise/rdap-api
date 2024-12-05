@@ -166,13 +166,15 @@ fn process_rdap_response(response: &RdapResponse) -> QueryResponse {
 
 #[tokio::main]
 async fn main() {
+    writeln!(io::stderr(), "Starting server...").unwrap();
     let asn_route = warp::path!("asn" / String)
         .and(warp::query::<std::collections::HashMap<String, String>>())
         .and_then(handle_asn_query);
 
     warp::serve(asn_route)
-        .run(([127, 0, 0, 1], 3030))
+        .run(([0, 0, 0, 0], 3030))
         .await;
+    writeln!(io::stderr(), "Server stopped.").unwrap();
 }
 
 async fn handle_asn_query(asn: String, query_params: std::collections::HashMap<String, String>) -> Result<impl warp::Reply, warp::Rejection> {
